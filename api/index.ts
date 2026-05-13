@@ -26,7 +26,17 @@ function normalizePrivateKey(value: string): string {
 function getBigQueryClient(): BigQuery {
   const projectId = process.env.GCP_PROJECT_ID;
   const clientEmail = process.env.GCP_CLIENT_EMAIL;
-  const privateKey = process.env.GCP_PRIVATE_KEY;
+  const privateKey = process.env.GCP_PRIVATE_KEY 
+  ? process.env.GCP_PRIVATE_KEY.replace(/\\n/g, '\n') 
+  : undefined;
+
+const bigquery = new BigQuery({
+  projectId: process.env.GCP_PROJECT_ID,
+  credentials: {
+    client_email: process.env.GCP_CLIENT_EMAIL,
+    private_key: privateKey, // Use the cleaned key here
+  },
+});
 
   if (clientEmail && privateKey) {
     return new BigQuery({

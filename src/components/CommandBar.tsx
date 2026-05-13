@@ -84,49 +84,56 @@ export const CommandBar: React.FC = () => {
             </div>
 
             {/* GCP PROJECT ID */}
-            <div className="relative group" title="GCP Project ID">
-              <LayoutGrid className="absolute left-2 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-blue-400 transition-colors" size={10} />
-              <input 
-                type="text" 
-                placeholder="Project ID" 
-                value={projectId}
-                onChange={(e) => {
-                  setProjectId(e.target.value);
-                  localStorage.setItem('user_gcp_project', e.target.value);
-                }}
-                className="h-8 w-28 bg-zinc-900/50 border border-zinc-800 rounded pl-7 pr-2 text-[10px] text-blue-400 focus:border-blue-400/50 outline-none transition-all placeholder:text-zinc-700"
-              />
-            </div>
+<div className="relative group" title="GCP Project ID">
+  <LayoutGrid className="absolute left-2 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-blue-400 transition-colors" size={10} />
+  <input 
+    type="text" 
+    placeholder="Project ID" 
+    value={projectId}
+    onChange={(e) => {
+      const val = e.target.value;
+      setProjectId(val);
+      localStorage.setItem('user_gcp_project', val);
+      setFilters({ projectId: val }); // CRITICAL: Updates the URL
+    }}
+    className="h-8 w-28 bg-zinc-900/50 border border-zinc-800 rounded pl-7 pr-2 text-[10px] text-blue-400 focus:border-blue-400/50 outline-none transition-all placeholder:text-zinc-700"
+  />
+</div>
 
-            {/* BIGQUERY DATASET */}
-            <div className="relative group" title="BigQuery Dataset ID">
-              <Database className="absolute left-2 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-zinc-300 transition-colors" size={10} />
-              <input 
-                type="text" 
-                placeholder="Dataset" 
-                value={datasetId}
-                onChange={(e) => {
-                  setDatasetId(e.target.value);
-                  localStorage.setItem('user_bq_dataset', e.target.value);
-                }}
-                className="h-8 w-24 bg-zinc-900/50 border border-zinc-800 rounded pl-7 pr-2 text-[10px] text-zinc-300 focus:border-zinc-500/50 outline-none transition-all placeholder:text-zinc-700"
-              />
-            </div>
+{/* BIGQUERY DATASET */}
+<div className="relative group" title="BigQuery Dataset ID">
+  <Database className="absolute left-2 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-zinc-300 transition-colors" size={10} />
+  <input 
+    type="text" 
+    placeholder="Dataset" 
+    value={datasetId}
+    onChange={(e) => {
+      const val = e.target.value;
+      setDatasetId(val);
+      localStorage.setItem('user_bq_dataset', val);
+      setFilters({ dataset: val }); // CRITICAL: Updates the URL
+    }}
+    className="h-8 w-24 bg-zinc-900/50 border border-zinc-800 rounded pl-7 pr-2 text-[10px] text-zinc-300 focus:border-zinc-500/50 outline-none transition-all placeholder:text-zinc-700"
+  />
+</div>
 
-            {/* BIGQUERY TABLE */}
-            <div className="relative group" title="BigQuery Table ID">
-              <TableIcon className="absolute left-2 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-zinc-300 transition-colors" size={10} />
-              <input 
-                type="text" 
-                placeholder="Table" 
-                value={tableId}
-                onChange={(e) => {
-                  setTableId(e.target.value);
-                  localStorage.setItem('user_bq_table', e.target.value);
-                }}
-                className="h-8 w-24 bg-zinc-900/50 border border-zinc-800 rounded pl-7 pr-2 text-[10px] text-zinc-300 focus:border-zinc-500/50 outline-none transition-all placeholder:text-zinc-700"
-              />
-            </div>
+{/* BIGQUERY TABLE */}
+<div className="relative group" title="BigQuery Table ID">
+  <TableIcon className="absolute left-2 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-zinc-300 transition-colors" size={10} />
+  <input 
+    type="text" 
+    placeholder="Table" 
+    value={tableId}
+    onChange={(e) => {
+      const val = e.target.value;
+      setTableId(val);
+      localStorage.setItem('user_bq_table', val);
+      setFilters({ table: val }); // CRITICAL: Updates the URL
+    }}
+    className="h-8 w-24 bg-zinc-900/50 border border-zinc-800 rounded pl-7 pr-2 text-[10px] text-zinc-300 focus:border-zinc-500/50 outline-none transition-all placeholder:text-zinc-700"
+  />
+</div>
+
           </div>
 
           <button 

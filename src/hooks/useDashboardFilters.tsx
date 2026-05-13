@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 
 /**
  * DashboardFilters Interface
- * Expanded to include BigQuery Configuration required by the API headers.
+ * Includes BigQuery Configuration and standard dashboard logic filters.
  */
 export interface DashboardFilters {
   agentId: string;
@@ -20,7 +20,7 @@ export function useDashboardFilters() {
 
   /**
    * Memoize filters to prevent unnecessary re-renders.
-   * Pulls values directly from URL search parameters.
+   * Maps URL snake_case parameters to camelCase object properties.
    */
   const filters = useMemo(() => ({
     agentId: searchParams.get('agent_id') || 'all',
@@ -34,33 +34,38 @@ export function useDashboardFilters() {
 
   /**
    * Updates URL search parameters based on filter changes.
-   * This is what persists your BigQuery config in the browser bar.
+   * Uses { replace: true } to prevent clogging the browser history while typing.
    */
   const setFilters = useCallback((newFilters: Partial<DashboardFilters>) => {
     const params = new URLSearchParams(searchParams);
     
-    // Helper to handle parameter updates
+    /**
+     * Helper to handle parameter updates.
+     * Logic: 
+     * - 'all' value clears the param for a cleaner URL.
+     * - Empty strings are KEPT to preserve the URL structure for sharing.
+     */
     const updateParam = (key: string, value: string | undefined) => {
       if (value === undefined) return;
       
-      if (!value || value === 'all') {
+      if (value === 'all') {
         params.delete(key);
       } else {
         params.set(key, value);
       }
     };
 
-    // Standard Filters
+    // Update Logic Filters
     updateParam('agent_id', newFilters.agentId);
     updateParam('user_id', newFilters.userId);
     updateParam('timespan', newFilters.timespan);
     
-    // BigQuery Configuration Parameters
+    // Update BigQuery Config (Persists these in the URL for sharing)
     updateParam('project_id', newFilters.projectId);
     updateParam('dataset', newFilters.dataset);
     updateParam('table', newFilters.table);
     
-    // Special handling for Trace ID
+    // Explicit Trace ID handling
     if (newFilters.traceId !== undefined) {
       if (newFilters.traceId) {
         params.set('trace_id', newFilters.traceId);
