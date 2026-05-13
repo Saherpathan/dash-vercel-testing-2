@@ -22,7 +22,7 @@ export const CommandBar: React.FC = () => {
   const [projectId, setProjectId] = useState(localStorage.getItem('user_gcp_project') || '');
   const [datasetId, setDatasetId] = useState(localStorage.getItem('user_bq_dataset') || '');
   const [tableId, setTableId] = useState(localStorage.getItem('user_bq_table') || '');
-
+const [gcpToken, setGcpToken] = useState(localStorage.getItem('user_gcp_token') || '');
   // Handle sharing the current dashboard URL
   const handleShare = async () => {
     await navigator.clipboard.writeText(window.location.href);
@@ -131,6 +131,21 @@ export const CommandBar: React.FC = () => {
       setFilters({ table: val }); // CRITICAL: Updates the URL
     }}
     className="h-8 w-24 bg-zinc-900/50 border border-zinc-800 rounded pl-7 pr-2 text-[10px] text-zinc-300 focus:border-zinc-500/50 outline-none transition-all placeholder:text-zinc-700"
+  />
+</div>
+</div>
+<div className="relative group" title="GCP Access Token (run: gcloud auth print-access-token)">
+  <Key className="absolute left-2 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-orange-400 transition-colors" size={10} />
+  <input 
+    type="password" 
+    placeholder="GCP Access Token" 
+    value={gcpToken}
+    onChange={(e) => {
+      const val = e.target.value;
+      setGcpToken(val);
+      localStorage.setItem('user_gcp_token', val); // Key must match apiService.ts
+    }}
+    className="h-8 w-32 bg-zinc-900/50 border border-zinc-800 rounded pl-7 pr-2 text-[10px] text-orange-400 focus:border-orange-500/50 outline-none transition-all placeholder:text-zinc-700"
   />
 </div>
 
